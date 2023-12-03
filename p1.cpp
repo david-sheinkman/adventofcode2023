@@ -33,7 +33,7 @@ void p1() {
 				char c = str[i];
 				if (isdigit(c)) digits.emplace_back(c - '0');
 				else {
-					for (size_t j = 0; j < 9; ++j) {
+					for (int j = 0; j < 9; ++j) {
 						size_t k = 0;
 						for (; k < digitNames[j].size() && i + k < str.size(); ++k) {
 							if (str[i + k] != digitNames[j][k]) break;
