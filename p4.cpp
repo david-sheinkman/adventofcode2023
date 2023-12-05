@@ -14,31 +14,13 @@ void p4() {
 	{
 		std::ifstream is(DATA_PATH + "p4.txt");
 
-		int64_t sum = 0;
+		int sum = 0;
 		for (std::string line; std::getline(is, line);) {
-			set<int64_t> winning;
-			set<int64_t> numbers;
-			{
-				auto colon = line.find(':') + 1;
-				string str = line.substr(colon, line.find('|') - colon);
-				stringstream ss(str);
-				int64_t v;
-				ss >> v;
-				while (ss.tellp() == 0) {
-					winning.insert(v);
-					ss >> v;
-				}
-			}
-			{
-				string str = line.substr(line.find('|') + 1);
-				stringstream ss(str);
-				int64_t v;
-				ss >> v;
-				while (ss.tellp() == 0) {
-					numbers.insert(v);
-					ss >> v;
-				}
-			}
+			set<int> winning;
+			set<int> numbers;
+			auto numsStrs = splitString(line.substr(line.find(':') + 1), '|', false);
+			for (auto s : splitString(numsStrs[0], ' ', false)) winning.insert(stoi(s));
+			for (auto s : splitString(numsStrs[1], ' ', false)) numbers.insert(stoi(s));
 			int count = 0;
 			for (auto v : numbers) {
 				if (winning.find(v) != winning.end()) ++count;
@@ -55,27 +37,9 @@ void p4() {
 		for (std::string line; std::getline(is, line); ++gameNum) {
 			set<int> winning;
 			set<int> numbers;
-			{
-				auto colon = line.find(':') + 1;
-				string str = line.substr(colon, line.find('|') - colon);
-				stringstream ss(str);
-				int v;
-				ss >> v;
-				while (ss.tellp() == 0) {
-					winning.insert(v);
-					ss >> v;
-				}
-			}
-			{
-				string str = line.substr(line.find('|') + 1);
-				stringstream ss(str);
-				int v;
-				ss >> v;
-				while (ss.tellp() == 0) {
-					numbers.insert(v);
-					ss >> v;
-				}
-			}
+			auto numsStrs = splitString(line.substr(line.find(':') + 1), '|', false);
+			for (auto s : splitString(numsStrs[0], ' ', false)) winning.insert(stoi(s));
+			for (auto s : splitString(numsStrs[1], ' ', false)) numbers.insert(stoi(s));
 			int count = 0;
 			for (auto v : numbers) {
 				if (winning.find(v) != winning.end()) ++count;
