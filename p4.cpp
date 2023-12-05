@@ -50,7 +50,6 @@ void p4() {
 	{
 		std::ifstream is(DATA_PATH + "p4.txt");
 
-		int64_t sum = 0;
 		int gameNum = 1;
 		vector<int> counts(1000, 1);
 		for (std::string line; std::getline(is, line); ++gameNum) {
@@ -70,7 +69,7 @@ void p4() {
 			{
 				string str = line.substr(line.find('|') + 1);
 				stringstream ss(str);
-				int64_t v;
+				int v;
 				ss >> v;
 				while (ss.tellp() == 0) {
 					numbers.insert(v);
@@ -83,6 +82,7 @@ void p4() {
 			}
 			for (int i = 1; i <= count; ++i) counts[i + gameNum] += counts[gameNum];
 		}
+		int sum = 0;
 		for (int i = 1; i < gameNum; ++i) sum += counts[i];
 		cout << sum << endl;
 	}
