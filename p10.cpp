@@ -114,100 +114,53 @@ void p10() {
 					if (data[r][c] == 'S') return true;
 					for (auto v : vals) if (v == data[r][c]) return true;
 					return false;
-					};
+				};
 				if (r != 0 && direction != DOWN && check(r, c, "|JL")) {
 					if (check(r - 1, c, "|F7")) {
 						s1.emplace(r - 1, c, UP, d);
-						path[r][c] = '^';
+						path[r][c] = data[r][c];
 					}
 				}
 				if (r != data.size() - 1 && direction != UP && check(r, c, "|F7")) {
 					if (check(r + 1, c, "|JL")) {
 						s1.emplace(r + 1, c, DOWN, d);
-						path[r][c] = 'v';
+						path[r][c] = data[r][c];
 					}
 				}
 				if (c != 0 && direction != RIGHT && check(r, c, "-7J")) {
 					if (check(r, c - 1, "-FL")) {
 						s1.emplace(r, c - 1, LEFT, d);
-						path[r][c] = '<';
+						path[r][c] = data[r][c];
 					}
 				}
 				if (c != data[0].size() - 1 && direction != LEFT && check(r, c, "-FL")) {
 					if (check(r, c + 1, "-7J")) {
 						s1.emplace(r, c + 1, RIGHT, d);
-						path[r][c] = '>';
+						path[r][c] = data[r][c];
 					}
 				}
 			}
 			if (!found) continue;
-			char edge = ' ';
-			auto fill = [&](int r, int c, char ch) -> char {
-				stack<pair<int, int>> s;
-				auto addPoint = [&](int r, int c) {
-					if (r >= 0 && r < path.size() && c >= 0 && c < path[0].size()) {
-						if (path[r][c] == '.') s.emplace(r, c);
-					}
-					else {
-						edge = ch;
-					}
-				};
-				addPoint(r, c);
-				bool inside = true;
-				while (!s.empty()) {
-					auto [r, c] = s.top();
-					s.pop();
-					path[r][c] = ch;
-					addPoint(r - 1, c);
-					addPoint(r + 1, c);
-					addPoint(r, c - 1);
-					addPoint(r, c + 1);
-				}
-				return edge;
-			};
-			auto loc = start;
-			char pd = ' ';
-			for (int d = 0; d < depth; ++d) {
-				char dir = path[loc.first][loc.second];
-				auto& [r, c] = loc;
-				switch (dir) {
-				case '^': {
-					fill(r, c + 1, 'R');
-					fill(r, c - 1, 'L');
-					if (pd == '>') fill(r + 1, c, 'R');
-					if (pd == '<') fill(r + 1, c, 'L');
-					r--;
-					break;
-				}
-				case 'v':
-					fill(r, c - 1, 'R');
-					fill(r, c + 1, 'L');
-					if (pd == '<') fill(r - 1, c, 'R');
-					if (pd == '>') fill(r - 1, c, 'L');
-					r++;
-					break;
-				case '<':
-					fill(r - 1, c, 'R');
-					fill(r + 1, c, 'L');
-					if (pd == '^') fill(r, c + 1, 'R');
-					if (pd == 'v') fill(r, c + 1, 'L');
-					c--;
-					break;
-				case '>':
-					fill(r + 1, c, 'R');
-					fill(r - 1, c, 'L');
-					if (pd == 'v') fill(r, c - 1, 'R');
-					if (pd == '^') fill(r, c - 1, 'L');
-					c++;
-					break;
-				}
-				pd = dir;
-			}
-			char ch = edge == 'L' ? 'R' : 'L';
 			int count = 0;
-			for (const auto& s : path) {
-				for (const auto c : s) {
-					if (c == ch) ++count;
+			for (auto& s : path) {
+				bool in = false;
+				for (size_t i = 0; i < s.size(); ++i) {
+					switch (s[i]) {
+					case '|':
+						in = !in;
+						break;
+					case 'F':
+						for (++i; i < s.size() && s[i] == '-'; ++i) {}
+						if (s[i] == 'J') in = !in;
+						break;
+					case 'L':
+						for (++i; i < s.size() && s[i] == '-'; ++i) {}
+						if (s[i] == '7') in = !in;
+						break;
+					default:
+						if (in) ++count;
+						break;
+					}
 				}
 			}
 			cout << count << endl;
