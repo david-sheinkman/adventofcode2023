@@ -30,7 +30,7 @@ void p25();
 
 int main() {
 	auto begin = std::chrono::steady_clock::now();
-	p21();
+	p22();
 	auto end = std::chrono::steady_clock::now();
 	std::cout << "Time=" << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << std::endl;
 	return 0;
