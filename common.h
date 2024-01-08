@@ -31,4 +31,4 @@ void print(T&& arg, Ts... arg2) {
 	else std::cout << std::endl;
 }
 
-std::vector<std::string> splitString(const std::string& str, const char c, const bool allowEmpty);
+std::vector<std::string> splitString(const std::string& str, const char c, bool allowEmpty = false);
