@@ -105,7 +105,7 @@ void p22p2() {
 	vector<vector<vector<char>>> data;
 	loadBricksAndData(DATA_PATH + "p22.txt", bricks, data);
 
-	int sum = 0;
+	size_t sum = 0;
 	for (int i = 0; i < bricks.size(); ++i) {
 		setBrick(data, bricks[i], '.');
 		set<int> fell;
